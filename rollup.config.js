@@ -3,6 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import typescript from "@rollup/plugin-typescript";
 import { terser } from "rollup-plugin-terser";
+import postcss from "rollup-plugin-postcss";
 import pkg from "./package.json";
 
 export default {
@@ -29,8 +30,16 @@ export default {
       tsconfig: "./tsconfig.json",
       declaration: true,
       declarationDir: "dist/types",
+      rootDir: "src",
     }),
     terser(),
+    postcss({
+      modules: true,
+      inject: true,
+      extract: false,
+      minimize: true,
+      sourceMap: false,
+    }),
   ],
   external: ["react", "react-dom"],
 };
