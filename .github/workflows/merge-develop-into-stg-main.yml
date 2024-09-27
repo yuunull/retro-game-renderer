@@ -1,0 +1,36 @@
+name: Merge develop into stg-main
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - develop
+
+permissions:
+  contents: write
+
+env:
+  BASE_BRANCH: develop
+  TARGET_BRANCH: stg-main
+  PR_TITLE: Merge develop into stg-main
+
+jobs:
+  merge:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Merge pull request
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "Github Actions"
+          git fetch origin ${{ env.BASE_BRANCH }}
+          git merge origin/${{ env.BASE_BRANCH }} --no-ff --commit -m "${{ env.PR_TITLE }}"
+          git push origin ${{ env.TARGET_BRANCH }}
