@@ -8,6 +8,8 @@ export const MessageWindow: React.FC = () => {
         <div className={styles.containerWindow__message}>Test Testああ</div>
         <div className="container-window__action"></div>
       </div>
+
+      <div>test</div>
     </div>
   );
 };
